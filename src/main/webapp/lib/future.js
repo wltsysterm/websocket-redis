@@ -762,16 +762,16 @@ bs.alert = function (options, handler) {
  * api根url地址
  * @return {string|*}
  */
-bs.apiRoot = function (subpath) {
-    if(bs.rootUrl){
+bs.apiRoot = function () {
+    if (bs.rootUrl) {
         return bs.rootUrl;
     }
-    var js=document.scripts;
-    var jsroot='';
-    for(var i=js.length;i>0;i--){
-        jsroot=js[i-1].src;
-        if(jsroot.indexOf(subpath==null?"/lib":subpath)>-1){
-            jsroot=jsroot.substring(0,jsroot.indexOf("/js/util"));
+    var js = document.scripts;
+    var jsroot = '';
+    for (var i = js.length; i > 0; i--) {
+        jsroot = js[i - 1].src;
+        if (jsroot.indexOf("/lib") > -1) {
+            jsroot = jsroot.substring(0, jsroot.indexOf("/lib"));
             break;
         }
     }

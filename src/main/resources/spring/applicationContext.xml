@@ -18,6 +18,56 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
     </context:component-scan>
 
+    <bean id="springUtil" class="com.wlt.util.SpringUtils"/>
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:sysparam.properties</value>
+            </list>
+        </property>
+        <property name="fileEncoding" value="UTF-8"></property>
+    </bean>
+    <bean id="jedisPoolUtil" class="com.wlt.util.JedisPoolUtil"
+          destroy-method="destroy">
+        <constructor-arg>
+            <value>${redis.host}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${redis.port}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${redis.maxIdle}00</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${redis.maxTotal}00</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>true</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>100000</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>300000</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${redis.password}</value>
+        </constructor-arg>
+    </bean>
 
-
+    <!-- spring thread pool executor -->
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 线程池维护线程的最少数量 -->
+        <property name="corePoolSize" value="10"/>
+        <!-- 允许的空闲时间 -->
+        <property name="keepAliveSeconds" value="60"/>
+        <!-- 线程池维护线程的最大数量 -->
+        <property name="maxPoolSize" value="200"/>
+        <!-- 缓存队列 -->
+        <property name="queueCapacity" value="10"/>
+        <!-- 对拒绝task的处理策略 -->
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
+        </property>
+    </bean>
 </beans>
